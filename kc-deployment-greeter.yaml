@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeter
+  labels:
+    app: greeter
+spec:
+  replicas: 2
+  selector: 
+    matchLabels:
+      app: greeter
+  template:
+    metadata:
+      labels:
+        app: greeter
+    spec:
+      containers:
+      - name: greeter
+        image: gcr.io/google-samples/hello-app:2.0
+        ports:
+        - containerPort: 8080

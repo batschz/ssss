@@ -1,20 +1,87 @@
-<p align="center">
-    <img src="https://user-images.githubusercontent.com/1342803/36623515-7293b4ec-18d3-11e8-85ab-4e2f8fb38fbd.png" width="320" alt="API Template">
-    <br>
-    <br>
-    <a href="http://docs.vapor.codes/3.0/">
-        <img src="http://img.shields.io/badge/read_the-docs-2196f3.svg" alt="Documentation">
-    </a>
-    <a href="https://discord.gg/vapor">
-        <img src="https://img.shields.io/discord/431917998102675485.svg" alt="Team Chat">
-    </a>
-    <a href="LICENSE">
-        <img src="http://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT License">
-    </a>
-    <a href="https://circleci.com/gh/vapor/api-template">
-        <img src="https://circleci.com/gh/vapor/api-template.svg?style=shield" alt="Continuous Integration">
-    </a>
-    <a href="https://swift.org">
-        <img src="http://img.shields.io/badge/swift-4.1-brightgreen.svg" alt="Swift 4.1">
-    </a>
-</p>
+# SSSS - Server Side Swift in Scale
+
+## Start with local development
+
+Just open the project in Xcode and run the `Run` target. Try out your endpoints using [http://localhost:8080]() in your browser.
+
+## Docker
+
+### Install docker
+
+Download docker: [https://store.docker.com/editions/community/docker-ce-desktop-mac]()
+
+### Build docker image
+`docker build -t ssss:latest .`
+
+### Run docker image
+`docker run -p 8080:8080 -t ssss:latest` and try it out in your browser [http://localhost:8080]()
+
+### Kill all docker container
+`docker kill $(docker ps -q)`
+
+## Kubernetes
+
+Helpful medium post that helps to understand kubernetes and it parts: [https://medium.com/@awkwardferny/getting-started-with-kubernetes-ingress-nginx-on-minikube-d75e58f52b6c]()
+
+## Minikube
+
+> Minikube is a tool that makes it easy to run Kubernetes locally. Minikube runs a single-node Kubernetes cluster inside a VM on your laptop for users looking to try out Kubernetes or develop with it day-to-day.
+
+### Install
+[https://kubernetes.io/docs/tasks/tools/install-minikube/]()
+
+### Run
+`minikube run`
+
+### Switch Docker context to Docker inside minikube
+`eval $(minikube docker-env)` or switch back to local Docker context `eval $(docker-machine env -u)`
+
+### Build docker images in k8s docker registry
+`docker build -t ssss:1 .`
+
+### List all docker images in current registry
+`docker images`
+
+### Create deployment and start pods
+`kubectl apply -f kc-deployment.yaml`
+
+`kubectl get po` to monitor the pods
+
+### Create service
+`kubectl apply -f kc-service.yaml`
+
+`kubectl get svc` to monitor the services
+
+### Create ingress
+`kubectl apply -f kc-ingress.yaml`
+
+`kubectl get ingress` to monitor the ingress
+
+### Get Cluster IP
+`minikube ip`
+
+and open the ip in your browser to test
+
+### Deploy a update
+`docker build -t ssss:2 .`
+
+change the version of the image in the `kc-deployment.yaml` file and run `kubectl apply -f kc-deployment.yaml`
+
+You can monitor the rolling update via `kubectl get po -w`
+
+### Deploy another micro service (google greeter)
+`kubectl apply -f kc-deployment-greeter.yaml`
+
+`kubectl apply -f kc-service-greeter.yaml`
+
+add the following lines to the `kc-ingress.yaml` file:
+
+```
+- path: /greeter
+	backend:
+	  serviceName: greeter
+	  servicePort: 8080
+```
+and deploy it via `kubectl apply -f kc-ingress.yaml`
+
+

@@ -5,18 +5,20 @@ final class SomeController {
     let serverId = UUID.init().uuidString
     
     func crash(_ req: Request) throws -> String {
-        exit(0)
-        return "you will never see this message \(serverId)"
+        guard Int.random(in: 0 ..< 3) > 0 else {
+            fatalError("argh")
+        }
+        return "💩, \(serverId)"
     }
 
     func hello(_ req: Request) throws -> String {
-        return "It works! \(serverId)"
+        return "🍺, \(serverId)"
     }
     
     func memory(_ req: Request) throws -> String {
         let mb = 1048576
         _ = [UInt8](repeating: 0, count: 1000 * mb)
-        return "Memory allocated on Server \(serverId)"
+        return "👨🏻‍💻 \(serverId)"
     }
 
 }

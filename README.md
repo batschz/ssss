@@ -2,7 +2,20 @@
 
 ## Start with local development
 
-Just open the project in Xcode and run the `Run` target. Try out your endpoints using [http://localhost:8080]() in your browser.
+`git clone git@github.com:batschz/ssss.git`
+
+### Install vapor
+
+```
+brew tap vapor/tap
+brew install vapor/tap/vapor
+```
+
+and create a Xcode project via vapor cli
+
+`vapor xcode`
+
+Open the project in Xcode and run the `Run` target. Try out your endpoints using [http://localhost:8080]() in your browser.
 
 ## Docker
 
